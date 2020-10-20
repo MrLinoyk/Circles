@@ -10,6 +10,7 @@ public class MainWindow extends JFrame {
     private static final int POS_Y = 200;
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 600;
+    private GameCanvas gameCanvas = new GameCanvas(this);
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -29,16 +30,7 @@ public class MainWindow extends JFrame {
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setResizable(false);
         setTitle("Circles");
-        GameCanvas gameCanvas = new GameCanvas(this);
-        gameCanvas.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1)
-                    addSprite(new Ball(e.getX(), e.getY()));
-                else if (e.getButton() == MouseEvent.BUTTON3)
-                    removeSprite ();
-            }
-        });
+        mouseListener();
         add(gameCanvas);
         initGame();
         setVisible(true);
@@ -82,5 +74,18 @@ public class MainWindow extends JFrame {
         for (int i = 0; i < spritesCount; i++) {
             sprites[i].render(gameCanvas, g);
         }
+    }
+
+    private void mouseListener () {
+        gameCanvas.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1)
+                    addSprite(new Ball(e.getX(), e.getY()));
+                else if (e.getButton() == MouseEvent.BUTTON3)
+                    removeSprite ();
+            }
+        });
+
     }
 }
